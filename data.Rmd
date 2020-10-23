@@ -527,6 +527,28 @@ stargazer(con_est_f[[1]], con_est_f[[2]],con_est_f[[3]],con_est_f[[6]], con_est_
           dep.var.labels.include = F, nobs = T, align = TRUE)
 ```
 
+```{r, echo=TRUE, warning=FALSE}
+con_types<-con_main[c(10, 7, 8, 9, 6, 5)]
+names(con_types)
+```
+
+
+```{r, echo=TRUE, results='hide', warning=FALSE}
+con_est_f<-list(length(con_types)) # Create a container for my regression results.
+
+for (i in seq_along(con_types)) {
+  con_est_f[[i]] <-felm(log(con_types[[i]]+1)~niger_del_oilf:amnes_yr | year:as.factor(lgga) + as.factor(year) + as.factor(lgga) | 0 | state.x, data = con_main, subset = niger_del_all==1, exactDOF = TRUE, bootcluster = "model")
+}
+```
+
+```{r, echo=TRUE, warning=FALSE}
+stargazer(con_est_f[[1]], con_est_f[[2]],con_est_f[[3]],con_est_f[[4]], con_est_f[[5]],con_est_f[[6]], type = "text" ,title = "Rebel and Militia Violence - Controlling for rainfall and population", 
+          style = "aer", column.labels = c("Rebel", "Battles", "Civilian Violence", "Protest", "All Events", "Fatalities"), 
+          covariate.labels = c('Policy Yr * Oil Field'),
+          dep.var.caption = c("Conflict Violence"),
+          dep.var.labels.include = F, nobs = T, align = TRUE)
+```
+
 ```{r}
 
 ```
